@@ -10,6 +10,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/coding' element={<Coding/>} />
+        <Route path="/" element={<>Hello world</>} />
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
