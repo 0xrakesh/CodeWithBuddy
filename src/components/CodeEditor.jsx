@@ -15,7 +15,8 @@ const CodeEditor = () => {
 
     const handleCodeInput = (event) => {
         setCode(event)
-        socket.emit("send-code",event)
+        if(transmit)           
+            socket.emit("send-code",event)
     }
 
     useEffect(() => {
