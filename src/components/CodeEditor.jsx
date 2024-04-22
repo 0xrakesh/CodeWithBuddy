@@ -11,7 +11,7 @@ const CodeEditor = () => {
     const [output, setOutput] = useRecoilState(outputValue)
     const [transmit, setTransmit] = useState(false);
     const [width, setWidth] = useState('');
-    const socket = io("ws://localhost:8000");
+    const socket = io(`ws://${REACT_APP_COMPILER_URL}`);
 
     const handleCodeInput = (event) => {
         setCode(event)
