@@ -11,7 +11,7 @@ const CodeEditor = () => {
     const [output, setOutput] = useRecoilState(outputValue)
     const [transmit, setTransmit] = useState(false);
     const [width, setWidth] = useState('');
-    const socket = io(`ws://${process.env.REACT_APP_COMPILER_URL}`);
+    const socket = io(`ws://${process.env.REACT_APP_SOCKET_URL}`);
 
     const handleCodeInput = (event) => {
         setCode(event)
@@ -54,9 +54,16 @@ const CodeEditor = () => {
                 body: JSON.stringify(data)
             })
             const result = await response.json();
+
             let tmp = result.output
-            tmp = tmp[0].split('\n')
-            setOutput(tmp);
+            console.log(tmp[0])
+            if(tmp[0].status === "Compilation error") {
+                setOutput(tmp[0].status)
+            }
+            else {
+                tmp = tmp[0].split('\n')
+                setOutput(tmp);
+            }
         }
         fetchOutput();
     }
