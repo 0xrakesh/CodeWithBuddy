@@ -12,8 +12,8 @@ const CodeEditor = () => {
     const [ codes, setCode ] = useRecoilState(codeValue);
     const [output, setOutput] = useRecoilState(outputValue)
     const [transmit, setTransmit] = useState(false);
-    // const socket = io(`wss://${process.env.REACT_APP_SOCKET_URL}`);
-    const socket = io(`http://localhost:8000`)
+    const socket = io(`https://${process.env.REACT_APP_SOCKET_URL}`);
+    // const socket = io(`http://localhost:8000`)
     const editorRef = useRef(null);
 
     const handleCodeInput = (event) => {
