@@ -3,6 +3,7 @@ import './index.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Coding from './coding';
 import { RecoilRoot } from 'recoil';
+import Home from './home';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -10,7 +11,8 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/coding' element={<Coding/>} />
-        <Route path="/" element={<>Hello world</>} />
+        <Route path="/" element={<Home/>} />
+
       </Routes>
     </BrowserRouter>
   </RecoilRoot>

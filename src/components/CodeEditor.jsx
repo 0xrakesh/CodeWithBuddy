@@ -1,25 +1,32 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import AceEditor from 'react-ace';
+/* eslint-disable no-unused-vars */
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Editor } from '@monaco-editor/react';
 import { io } from 'socket.io-client';
 import { codeValue } from '../hooks/codingValue';
 import { outputValue } from '../hooks/outputValue';
 import { useRecoilState } from 'recoil';
+import NightOwl  from './themes/IDLE.json';
 
 
 const CodeEditor = () => {
     const [ codes, setCode ] = useRecoilState(codeValue);
     const [output, setOutput] = useRecoilState(outputValue)
     const [transmit, setTransmit] = useState(false);
-    const [width, setWidth] = useState('');
-    const socket = io(`wss://${process.env.REACT_APP_SOCKET_URL}`);
+    // const socket = io(`wss://${process.env.REACT_APP_SOCKET_URL}`);
+    const socket = io(`http://localhost:8000`)
+    const editorRef = useRef(null);
 
     const handleCodeInput = (event) => {
         setCode(event)
-        if(transmit)           
-            socket.emit("send-code",event)
+        if(transmit) {
+            socket.emit('send-code',event);
+        }
     }
 
     useEffect(() => {
+        socket.on("connection", (data) => {
+            console.log(data)
+        })
         socket.on("get-code", (data) => {
             if(transmit)
                 setCode(data)
@@ -27,12 +34,6 @@ const CodeEditor = () => {
         return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[socket]);
-
-
-    useEffect(() => {
-        setWidth(String(window.innerWidth/1.3)+"px");
-    },[])
-
 
     const ClearCode = () => {
         setCode('')
@@ -69,35 +70,31 @@ const CodeEditor = () => {
         fetchOutput();
     }
 
+    const focusOnMount = (editor, monaco) => {
+        editorRef.current = editor
+    }
+
     const handleTransmission = () => {
         setTransmit((prev) => !prev)
     }
 
     return (
         <Fragment>
-            <div className='flex p-5 gap-5 bg-violet-300 h-fit'>
-                <AceEditor
-                    mode={'python'}
-                    defaultLanguage="python"
-                    theme='vs-dark'
-                    highlightActiveLine={true}
-                    showPrintMargin={true}
+            <div className='flex p-5 gap-5 my-5 bg-violet-300 h-fit'>
+                <Editor
+                    height="50vh"
+                    defaultLanguage='python'
+                    defaultValue='console.log("Welcome to code with buddy.")'
+                    onMount={focusOnMount}
+                    theme={NightOwl}
                     value={codes}
-                    width={width}
                     onChange={handleCodeInput}
-                    setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: true,
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
                 />
                 <div className="buttons flex gap-3 flex-col">
-                    <button className='bg-white shadow-lg shadow-indigo-500/40 px-4 py-2 rounded-md' onClick={ClearCode}>Clear Code</button>
-                    <button className='bg-green-300 shadow-lg shadow-green-400/40 px-4 py-2 rounded-md' onClick={RunCode}>Run Code</button>
-                    <button className='bg-violet-700 shadow-lg shadow-violet-400/40 px-4 py-2 text-white rounded-md'>Save a code</button>
-                    <button className='bg-purple-500 shadow-lg shadow-purple-400/40 px-4 py-2 text-white rounded-md' onClick={handleTransmission}>{transmit ? "Collab" : "Dev Mode"}</button>
+                    <button className='bg-white text-black shadow-lg shadow-indigo-500/40 px-4 py-2 rounded-md' onClick={ClearCode}>Clear Code</button>
+                    <button className='bg-green-300 shadow-lg text-green-800 shadow-green-400/40 px-4 py-2 rounded-md' onClick={RunCode}>Run Code</button>
+                    <button className='bg-primary text-white shadow-lg shadow-violet-400/40 px-4 py-2 rounded-md'>Save a code</button>
+                    <button className='bg-purple-500 text-white shadow-lg shadow-purple-400/40 px-4 py-2 rounded-md' onClick={handleTransmission}>{transmit ? "Collab" : "Dev Mode"}</button>
                 </div>
             </div>
         </Fragment>
