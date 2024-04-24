@@ -13,7 +13,6 @@ const CodeEditor = () => {
     const [output, setOutput] = useRecoilState(outputValue)
     const [transmit, setTransmit] = useState(false);
     const socket = io(`https://${process.env.REACT_APP_SOCKET_URL}`);
-    // const socket = io(`http://localhost:8000`)
     const editorRef = useRef(null);
 
     const handleCodeInput = (event) => {
@@ -24,14 +23,10 @@ const CodeEditor = () => {
     }
 
     useEffect(() => {
-        socket.on("connection", (data) => {
-            console.log(data)
-        })
         socket.on("get-code", (data) => {
             if(transmit)
                 setCode(data)
         })
-        return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[socket]);
 
