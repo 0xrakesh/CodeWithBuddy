@@ -11,9 +11,9 @@ import NightOwl  from './themes/IDLE.json';
 const CodeEditor = () => {
     const [ codes, setCode ] = useRecoilState(codeValue);
     const [output, setOutput] = useRecoilState(outputValue)
-    const [transmit, setTransmit] = useState(false);
-    const socket = io(`https://${process.env.REACT_APP_SOCKET_URL}`);
-    // const socket = io(`http://localhost:8000`)
+    const [transmit, setTransmit] = useState(false); 
+    const socketURL = `wss://${process.env.REACT_APP_SOCKET_URL}`;
+    const [socket, setSocket] = useState(null);
     const editorRef = useRef(null);
 
     const handleCodeInput = (event) => {
@@ -24,10 +24,17 @@ const CodeEditor = () => {
     }
 
     useEffect(() => {
-        socket.on("connection", (data) => {
+        const tmp = io(socketURL);
+        setSocket(tmp);
+
+        return () => tmp.disconnect();
+    },[])
+
+    useEffect(() => {
+        socket?.on("connection", (data) => {
             console.log(data)
         })
-        socket.on("get-code", (data) => {
+        socket?.on("get-code", (data) => {
             if(transmit)
                 setCode(data)
         })
