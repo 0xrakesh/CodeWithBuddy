@@ -31,7 +31,6 @@ const CodeEditor = () => {
             if(transmit)
                 setCode(data)
         })
-        return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[socket]);
 
