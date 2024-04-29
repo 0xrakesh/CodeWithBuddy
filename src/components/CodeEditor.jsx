@@ -6,27 +6,51 @@ import { codeValue } from '../hooks/codingValue';
 import { outputValue } from '../hooks/outputValue';
 import { useRecoilState } from 'recoil';
 import NightOwl  from './themes/IDLE.json';
-
+import { authentication } from '../middleware/auth';
+import { useNavigate } from 'react-router-dom';
+import { mode } from '../hooks/mode';
 
 const CodeEditor = () => {
     const [ codes, setCode ] = useRecoilState(codeValue);
     const [output, setOutput] = useRecoilState(outputValue)
+    const [userMode,setUserMode] = useRecoilState(mode);
     const [transmit, setTransmit] = useState(false);
-    const socket = io(`https://${process.env.REACT_APP_SOCKET_URL}`);
+    const socket = io(`http://${process.env.REACT_APP_SOCKET_URL}`);
+    const socketInstance = io(`http://${process.env.REACT_APP_SOCKET_URL}`)
     const editorRef = useRef(null);
+    const navigate = useNavigate();
+
+    let timeoutId;
 
     const handleCodeInput = (event) => {
         setCode(event)
         if(transmit) {
-            socket.emit('send-code',event);
+            console.log("Emitting")
+            socketInstance.emit('send-code',event)
         }
+        // clearTimeout(timeoutId);
+
+        // const DELAY = 100;
+        // timeoutId = setTimeout(() => {
+        //   if (transmit) {
+        //     socket.emit('send-code', event);
+        //   }
+        // }, DELAY);
+
     }
 
     useEffect(() => {
+        authentication().then((res) => {
+            if(res===401) {
+                navigate("/")
+            }
+        })
         socket.on("get-code", (data) => {
+            console.log("Getting", socket.id)
             if(transmit)
                 setCode(data)
         })
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[socket]);
 
@@ -43,7 +67,7 @@ const CodeEditor = () => {
         }
         const fetchOutput = async() => {
             console.log(url)
-            const response = await fetch(url+"playground/run",{
+            const response = await fetch(url+"/playground/run",{
                 method:"POST",
                 headers: {
                     "Content-Type":"application/json"
@@ -89,7 +113,11 @@ const CodeEditor = () => {
                     <button className='bg-white text-black shadow-lg shadow-indigo-500/40 px-4 py-2 rounded-md' onClick={ClearCode}>Clear Code</button>
                     <button className='bg-green-300 shadow-lg text-green-800 shadow-green-400/40 px-4 py-2 rounded-md' onClick={RunCode}>Run Code</button>
                     <button className='bg-primary text-white shadow-lg shadow-violet-400/40 px-4 py-2 rounded-md'>Save a code</button>
-                    <button className='bg-purple-500 text-white shadow-lg shadow-purple-400/40 px-4 py-2 rounded-md' onClick={handleTransmission}>{transmit ? "Collab" : "Dev Mode"}</button>
+                    
+                    { userMode === "solo" || userMode === "" ? 
+                        <></> :
+                        <button className='bg-purple-500 text-white shadow-lg shadow-purple-400/40 px-4 py-2 rounded-md' onClick={handleTransmission}>{transmit ? "Collab" : "Dev Mode"}</button>
+                    }
                 </div>
             </div>
         </Fragment>

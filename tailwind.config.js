@@ -9,7 +9,9 @@ module.exports = {
       },
       fontFamily: {
         "nova":"Nova Square, sans-serif",
-        "qualy":"Qualy, sans-serif"
+        "qualy":"Qualy, sans-serif",
+        "helvetica":"Helvetica Rounded, sans-serif",
+        "helvetica-ligh":"Helvetica Light, sans-serif"
       }
     },
   }, 

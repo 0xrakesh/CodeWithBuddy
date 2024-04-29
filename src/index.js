@@ -4,6 +4,7 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Coding from './coding';
 import { RecoilRoot } from 'recoil';
 import Home from './home';
+import Dashboard from './dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -11,6 +12,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/coding' element={<Coding/>} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/" element={<Home/>} />
 
       </Routes>

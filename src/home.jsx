@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
 import Navbar from './components/Navbar';
-import Pattern from './components/Pattern';
+import './pattern.css'
+import LoginForm from './components/LoginForm';
 
 const Home = () => {
     return (
         <Fragment>
             <Navbar/>
-            <Pattern/>
+            <LoginForm/>
         </Fragment>
     );
 }
