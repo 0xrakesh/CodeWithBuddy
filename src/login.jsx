@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import './pattern.css'
 import LoginForm from './components/LoginForm';
 
-const Home = () => {
+const Login = () => {
     return (
         <Fragment>
             <Navbar/>
@@ -12,4 +12,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default Login;

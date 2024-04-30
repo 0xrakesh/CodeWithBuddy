@@ -13,15 +13,15 @@ const Box = ({title,image,description, userMode}) => {
         if(userMode==='solo'){
             navigate("/coding")
         }
-        else if(userMode === "collab") {
+        else if(userMode === "collab" || userMode === "join") {
             navigate("/coding")
         }
     }
 
     return (
         <Fragment>
-            <div className='w-96 hover:cursor-pointer bg-white/10 py-8 px-6 rounded-md' onClick={() => handleMode(userMode)} >
-                <img src={image} alt="" height={300} className='rounded' />
+            <div className='w-96 hover:cursor-pointer hover:rotate-2 min:h-[316px] h-[316px] hover:transition-all bg-white/10 py-8 px-6 rounded-md items-center justify-evenly flex flex-col' onClick={() => handleMode(userMode)} >
+                <img src={image} alt="" height={50} className='rounded' />
                 <h1 className='text-center text-xl py-2  font-bold font-qualy'>{title}</h1>
                 <p className="text-center text-white/80 font-helvetica-light">{description}</p>
             </div>

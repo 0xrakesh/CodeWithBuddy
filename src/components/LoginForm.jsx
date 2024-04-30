@@ -54,7 +54,7 @@ const LoginForm = () => {
                     <input className='bg-violet-300 font-helvetica-light border-[1px] px-4 py-2 rounded w-96' onChange={handleUserInput} value={email} type="email" name="email" id="" placeholder='Enter the email/username'/>
                 </div>
                 <div className='flex my-[4svh] max-sm:my-[1svh] justify-center'>
-                    <input className='bg-violet-300 font-helvetica-light border-[1px] px-4 py-2 rounded w-96' onChange={handlePwdInput}  value={password} type="password" name="password" id="" placeholder='Enter the email/username'/>
+                    <input className='bg-violet-300 font-helvetica-light border-[1px] px-4 py-2 rounded w-96' onChange={handlePwdInput}  value={password} type="password" name="password" id="" placeholder='Enter the password'/>
                 </div>
                 <div className="flex my-[4svh] max-sm:my-[1svh] justify-center">
                     <button className='bg-primary text-bold font-helvetica-light px-8 py-3 my-2 rounded-lg text-md' onClick={handleSubmit}>Sign In</button>
@@ -63,7 +63,7 @@ const LoginForm = () => {
                 <div className="flex my-[4svh] max-sm:my-[1svh] justify-center">
                     <button type='submit' className='border-[1px] py-3 px-8 my-2 font-helvetica-light rounded-lg'>Continue with Google</button>
                 </div>
-                <p className='text-center text-xl font-helvetica-light'>If you don't have an accound. <span className='text-primary underline'>Sign Up</span></p>
+                <p className='text-center text-xl font-helvetica-light'>If you don't have an account. <span className='text-primary underline hover:cursor-pointer' onClick={() => navigate("/signup")}>Sign Up</span></p>
             </form>
         </div>
     );

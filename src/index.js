@@ -3,7 +3,8 @@ import './index.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Coding from './coding';
 import { RecoilRoot } from 'recoil';
-import Home from './home';
+import Login from './login';
+import Signup from './signup';
 import Dashboard from './dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,8 +14,9 @@ root.render(
       <Routes>
         <Route path='/coding' element={<Coding/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/" element={<Home/>} />
-
+        <Route path="/login" element={<Login/>} />
+        <Route path="/signup" element={<Signup/>} />
+        <Route path="/" element={<Login/>}/>
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
