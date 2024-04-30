@@ -9,7 +9,7 @@ const CodeOutput = () => {
         <div className='h-fit w-full p-4 bg-violet-300'>
             Output
             <pre className='bg-white text-black min:h-32 max:h-48 overflow-auto p-2 rounded-md'>
-                {output ? output?.map((data,index) => (
+                {output ? output === "Compilation Error" ? output : output?.map((data,index) => (
                     <p key={index}>{data}</p>
                 )): null}
             </pre>
