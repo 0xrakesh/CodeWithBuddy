@@ -3,6 +3,7 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { codeValue } from '../hooks/codingValue';
+import { error } from '../hooks/error';
 import { outputValue } from '../hooks/outputValue';
 import { useRecoilState } from 'recoil';
 import NightOwl  from './themes/IDLE.json';
@@ -13,6 +14,7 @@ import { mode } from '../hooks/mode';
 
 const CodeEditor = () => {
     const [ codes, setCode ] = useRecoilState(codeValue);
+    const [ err, setError ] = useRecoilState(error)
     const [output, setOutput] = useRecoilState(outputValue)
     const [userMode,setUserMode] = useRecoilState(mode);
     const [transmit, setTransmit] = useState(false);
@@ -42,6 +44,12 @@ const CodeEditor = () => {
     }
 
     useEffect(() => {
+        authentication().then((status) => {
+            if(status === "401") {
+                navigate('/')
+            }
+        });
+
         if(userMode==="collab") {
             let roomId = generateRandomString(6)
             socket.emit("room-create",roomId)
@@ -85,6 +93,7 @@ const CodeEditor = () => {
             let tmp = result.output
             if(tmp[0].status === "Compilation error") {
                 setOutput(tmp[0].status)
+                setError((tmp[0].error))
             }
             else {
                 tmp = tmp[0].split('\n')
